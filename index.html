@@ -60,10 +60,10 @@ nav a{
   border-radius:20px;
 }
 
-/* HERO PARALLAX */
+/* HERO */
 .hero{
   height:100vh;
-  background:url('https://upload.wikimedia.org/wikipedia/commons/6/6f/Wielkopolska_landscape.jpg') center/cover fixed;
+  background:url('images/zdjecie1.jpg') center/cover fixed;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -88,25 +88,14 @@ nav a{
   font-size:4rem;
 }
 
+/* SEKCJE */
 section{
   padding:80px 20px;
   max-width:1100px;
   margin:auto;
 }
 
-/* KARTY */
-.card{
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
-
-body.dark .card{
-  background:#1e1e1e;
-}
-
-/* GALERIA PREMIUM */
+/* GALERIA */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -116,11 +105,41 @@ body.dark .card{
 .gallery img{
   width:100%;
   border-radius:15px;
-  transition:0.4s;
+  transition:0.3s;
+  cursor:pointer;
 }
 
 .gallery img:hover{
   transform:scale(1.05);
+}
+
+/* LIGHTBOX */
+#lightbox{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+
+#lightbox img{
+  max-width:90%;
+  max-height:80%;
+  border-radius:10px;
+}
+
+#close{
+  position:absolute;
+  top:20px;
+  right:40px;
+  font-size:40px;
+  color:white;
+  cursor:pointer;
 }
 
 /* MAPA */
@@ -174,28 +193,18 @@ footer{
 
 <section id="historia" class="fade">
   <h2>Rys historyczny</h2>
-  <div class="card">
-    <p>
-      Cieśle Małe to spokojna wieś w Wielkopolsce, gdzie czas płynie wolniej.
-      Otoczona polami i naturą, stanowi idealne miejsce dla osób szukających ciszy i autentycznego klimatu.
-    </p>
-  </div>
-</section>
-
-<section class="fade">
-  <h2>Odkryj to miejsce</h2>
   <p>
-    🌾 Cisza • 🌳 Natura • 🚜 Tradycja • 🌅 Zachody słońca
+    Cieśle Małe to spokojna wieś w Wielkopolsce, otoczona polami i naturą.
   </p>
 </section>
 
 <section id="galeria" class="fade">
   <h2>Galeria</h2>
   <div class="gallery">
-    <img src="Borowiecka 25.JPG">
-    <img src="Borowiecka 32.JPG">
-    <img src="Borowiecka 36.JPG">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Polish_countryside_house.jpg">
+    <img src="images/zdjecie1.jpg">
+    <img src="images/zdjecie2.jpg">
+    <img src="images/zdjecie3.jpg">
+    <img src="images/zdjecie4.jpg">
   </div>
 </section>
 
@@ -207,8 +216,14 @@ footer{
 </section>
 
 <footer>
-  © 2026 Cieśle Małe • Strona promocyjna
+  © 2026 Cieśle Małe
 </footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="close">&times;</span>
+  <img id="lightbox-img">
+</div>
 
 <script>
 function toggleDark(){
@@ -220,8 +235,8 @@ if(localStorage.getItem("darkMode")==="true"){
   document.body.classList.add("dark");
 }
 
+/* animacje */
 const faders=document.querySelectorAll('.fade');
-
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
@@ -229,8 +244,30 @@ const obs=new IntersectionObserver(entries=>{
     }
   });
 });
-
 faders.forEach(el=>obs.observe(el));
+
+/* LIGHTBOX */
+const images=document.querySelectorAll('.gallery img');
+const lightbox=document.getElementById('lightbox');
+const lightboxImg=document.getElementById('lightbox-img');
+const close=document.getElementById('close');
+
+images.forEach(img=>{
+  img.addEventListener('click',()=>{
+    lightbox.style.display='flex';
+    lightboxImg.src=img.src;
+  });
+});
+
+close.addEventListener('click',()=>{
+  lightbox.style.display='none';
+});
+
+lightbox.addEventListener('click',(e)=>{
+  if(e.target!==lightboxImg){
+    lightbox.style.display='none';
+  }
+});
 </script>
 
 </body>
